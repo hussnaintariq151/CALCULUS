@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>THE BLACK BOX — Level Map · Chapter 1</title>
+<link rel="stylesheet" href="shared/game.css">
+</head>
+<body>
+
+<div id="hud"></div>
+
+<div class="wrap">
+  <div class="eyebrow">Calculus · Chapter 1 · Functions and Models</div>
+  <h1>THE BLACK BOX</h1>
+  <p style="max-width:70ch">Aap salvage lab ke AI engineer hain. Ek sealed box aayi hai —
+     andar koi unknown machine hai. Box tor nahi sakte, sirf <strong>probe</strong> kar sakte hain.
+     41 levels me usko poori tarah decode karna hai, replica banana hai, aur akhir me
+     <strong>ulta chalana</strong> hai.</p>
+
+  <div class="card card--raised">
+    <h3>Tool belt</h3>
+    <p id="toolbelt" class="mono" style="font-size:13px;margin:0;color:var(--warn)">—</p>
+  </div>
+
+  <div class="acts" id="acts"></div>
+
+  <div class="navrow">
+    <span class="dim mono" style="font-size:11px">Progress is browser me save hota hai (localStorage).</span>
+    <button class="btn btn--ghost" id="reset">↺ PROGRESS RESET</button>
+  </div>
+</div>
+
+<script src="shared/game.js"></script>
+<script>
+'use strict';
+
+BB.mountHud(document.getElementById('hud'), null);
+
+/* ─────────────────────────── tool belt */
+var tools = BB.tools();
+document.getElementById('toolbelt').textContent =
+  tools.length ? tools.join('   ·   ') : 'Khaali — L01 complete karke pehla tool (PROBE) khol lein.';
+
+/* ─────────────────────────── acts + levels */
+var actsEl = document.getElementById('acts');
+
+BB.ACTS.forEach(function (act) {
+  var wrap = BB.el('section');
+  var levels = BB.LEVELS.filter(function (l) { return l.act === act.n; });
+  var done = levels.filter(function (l) { return BB.isDone(l.id); }).length;
+
+  wrap.appendChild(BB.el('div', 'act__head',
+    '<span class="act__no">ACT ' + act.roman + '</span>' +
+    '<span class="act__title">' + act.title + '</span>' +
+    '<span class="act__meta">§' + act.section + ' · ' + act.pages +
+      ' · ' + act.tagline + ' · ' + done + '/' + levels.length +
+      ' · DECODE ' + act.decode + '%</span>'
+  ));
+
+  var grid = BB.el('div', 'levels');
+
+  levels.forEach(function (l) {
+    var isDone = BB.isDone(l.id);
+    var open = BB.isUnlocked(l.id);
+    var playable = !!l.built && open;
+
+    var cls = 'lvl' + (l.boss ? ' lvl--boss' : '');
+    if (isDone) { cls += ' lvl--done'; }
+    else if (playable) { cls += ' lvl--ready'; }
+    else { cls += ' lvl--locked'; }
+
+    var state = isDone ? 'DONE' : (playable ? 'PLAY' : (open ? 'SOON' : 'LOCKED'));
+    var html =
+      '<span class="lvl__state">' + state + '</span>' +
+      '<div class="lvl__id">' + l.id + (l.boss ? '  ★ BOSS' : '') + '</div>' +
+      '<div class="lvl__name">' + l.title + '</div>' +
+      '<div class="lvl__tool">TOOL · ' + l.tool + '</div>';
+
+    var node;
+    if (playable) {
+      node = BB.el('a', cls, html);
+      node.href = l.slug + '/play.html';
+    } else {
+      node = BB.el('div', cls, html);
+      node.title = open ? 'Yeh level abhi banaya nahi gaya' : 'Pichhla level complete karein';
+      node.onclick = function () {
+        BB.toast(open ? l.id + ' abhi banaya nahi gaya' : 'Pehle ' + prevId(l.id) + ' complete karein');
+      };
+    }
+    grid.appendChild(node);
+  });
+
+  wrap.appendChild(grid);
+  actsEl.appendChild(wrap);
+});
+
+function prevId(id) {
+  var i = BB.index(id);
+  return i > 0 ? BB.LEVELS[i - 1].id : id;
+}
+
+/* ─────────────────────────── reset */
+document.getElementById('reset').onclick = function () {
+  if (confirm('Poora progress mit jayega. Pakka?')) {
+    BB.reset();
+    location.reload();
+  }
+};
+</script>
+</body>
+</html>

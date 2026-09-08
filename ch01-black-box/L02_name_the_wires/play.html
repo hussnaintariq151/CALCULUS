@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>L02 · NAME THE WIRES — The Black Box</title>
+<link rel="stylesheet" href="../shared/game.css">
+</head>
+<body>
+
+<div id="hud"></div>
+
+<div class="wrap">
+  <div class="steps" id="steps"></div>
+
+  <!-- ══════════════════════════════════════ STAGE 0 — BRIEFING -->
+  <section id="s0" class="stage active">
+    <div class="eyebrow">Act I · First Contact · Level 02</div>
+    <h1>NAME THE WIRES</h1>
+    <p class="dim">Stewart §1.1 · p. 8–9 (Figures 2 &amp; 3) · Ex 33–34 (p. 19)</p>
+
+    <div class="card">
+      <h3>Briefing</h3>
+      <p><strong>L01</strong> me aapne sabit kiya ke Box A honest hai — har input ka
+         exactly ek output. Lab manual me entry karni hai. Form khul gaya . . . aur
+         aap ruk gaye.</p>
+      <p>Form poochta hai: <em>machine ka naam?</em> <em>jo daala jaata hai?</em>
+         <em>jo nikalta hai?</em> — aapke paas rule hai, magar usko <strong>likhne ka
+         tareeqa</strong> nahi.</p>
+    </div>
+
+    <div class="card card--warn">
+      <h3>Mission</h3>
+      <p>Machine ke har part ko uska asli naam do, aur notation ke do aise dhoke
+         pehchano jinme rozana log phaste hain.</p>
+      <p class="dim mono" style="font-size:13px">4 stages · 1000 points · reward: LABEL GUN</p>
+    </div>
+
+    <div class="navrow">
+      <a class="btn btn--ghost" href="../index.html">← LEVEL MAP</a>
+      <button class="btn btn--primary" onclick="go(1)">LOAD LABEL GUN →</button>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ STAGE 1 — WIRE UP -->
+  <section id="s1" class="stage">
+    <div class="eyebrow">Stage 1 / 4 · 200 pts</div>
+    <h1>Wire up</h1>
+    <p>Neeche machine diagram hai. Label chun kar us slot par click karo jahan woh
+       lagti hai. <span class="dim">Do labels ghalat hain — woh kahin nahi lagengi.</span></p>
+
+    <div class="card">
+      <div class="rig">
+        <div class="rig__side">
+          <div class="pill pill--in">x</div>
+        </div>
+        <div><div class="box" id="m-box">f</div></div>
+        <div class="rig__side">
+          <div class="pill pill--ok">f(x)</div>
+        </div>
+      </div>
+
+      <div class="slotrow">
+        <div class="slotcol"><div class="slot" data-want="INPUT">?</div></div>
+        <div class="slotcol"><div class="slot" data-want="RULE">?</div></div>
+        <div class="slotcol"><div class="slot" data-want="OUTPUT">?</div></div>
+      </div>
+
+      <div class="bank" id="bank">
+        <button class="chip" data-id="OUTPUT">OUTPUT · f(x)</button>
+        <button class="chip" data-id="GRAPH">GRAPH</button>
+        <button class="chip" data-id="INPUT">INPUT · x</button>
+        <button class="chip" data-id="SLOPE">SLOPE</button>
+        <button class="chip" data-id="RULE">RULE · f</button>
+      </div>
+
+      <div id="m-done"></div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ STAGE 2 — f vs f(x) -->
+  <section id="s2" class="stage">
+    <div class="eyebrow">Stage 2 / 4 · 200 pts</div>
+    <h1>f aur f(x) — ek jaisa nahi</h1>
+    <p>Paanch tez sawaal. Yehi farq poore chapter me chalta rahega.</p>
+    <div id="q2"></div>
+  </section>
+
+  <!-- ══════════════════════════════════════ STAGE 3 — NOTATION TRAPS -->
+  <section id="s3" class="stage">
+    <div class="eyebrow">Stage 3 / 4 · 400 pts</div>
+    <h1>Notation traps</h1>
+    <p>Ab asli imtihaan. Poore stage me ek hi machine chalti hai:</p>
+    <p class="qgiven" style="font-size:16px">f(x) = 3x² − x + 2</p>
+    <p class="dim">Yeh Stewart ka <strong>Ex 1.1.33</strong> hai (p. 19) — book se bilkul same.</p>
+    <div id="q3"></div>
+  </section>
+
+  <!-- ══════════════════════════════════════ STAGE 4 — FIELD TEST -->
+  <section id="s4" class="stage">
+    <div class="eyebrow">Stage 4 / 4 · 200 pts</div>
+    <h1>Label gun · field test</h1>
+    <p>Chaar asli situations. Har ek ko <span class="mono">output = f(input)</span>
+       me likho.</p>
+    <div id="q4"></div>
+  </section>
+
+  <!-- ══════════════════════════════════════ STAGE 5 — COMPLETE -->
+  <section id="s5" class="stage">
+    <div class="eyebrow">Level complete</div>
+    <h1>Ab aap machine ko likh sakte hain.</h1>
+
+    <div class="card card--ok">
+      <h3>Aapne pakka kiya</h3>
+      <ul class="obj">
+        <li class="done"><strong>f</strong> = machine ka naam (ek rule)</li>
+        <li class="done"><strong>f(x)</strong> = us machine ka output — ek number</li>
+        <li class="done"><strong>independent</strong> variable = jo hum chunte hain</li>
+        <li class="done"><strong>dependent</strong> variable = jo khud tay ho jaata hai</li>
+        <li class="done">bracket ke <strong>andar</strong> = input par asar &nbsp;·&nbsp;
+            bracket ke <strong>bahar</strong> = output par asar</li>
+        <li class="done">f(2a) ≠ 2f(a) &nbsp;aur&nbsp; f(a²) ≠ [f(a)]²</li>
+      </ul>
+    </div>
+
+    <div class="tool" style="margin-bottom:18px">
+      <div class="tool__label">TOOL UNLOCKED</div>
+      <div class="tool__name">LABEL GUN</div>
+      <p class="dim" style="margin:0">Kisi bhi situation ko <span class="mono">output = f(input)</span>
+         me likhna. Aage lagta hai: <strong>L10</strong> (word problem se function banana),
+         <strong>L25</strong> (composition).</p>
+    </div>
+
+    <div class="card">
+      <h3>Final score</h3>
+      <p class="readout" id="final-score">0 / 1000</p>
+      <p class="dim mono" style="font-size:13px" id="final-decode">DECODE 0%</p>
+    </div>
+
+    <div class="card card--raised">
+      <h3>Ab yeh karein</h3>
+      <p><strong>1.</strong> Colab me <code class="mono">L02Cinematic</code> render karein —
+         `f(a+h)` ka beat khaas dekhein, woh <strong>L10</strong> ka darwaza hai.</p>
+      <p><strong>2.</strong> <a href="notes.md">notes.md</a> → Stewart Ex 1.1.33 aur 34 ke
+         pure solutions, aur `f` vs `f(x)` ka reference table.</p>
+      <p><strong>3.</strong> Phir <strong>L03 · WHERE DOES IT REFUSE?</strong> —
+         box har number qubool nahi karti. Domain aur range.</p>
+    </div>
+
+    <div class="navrow">
+      <button class="btn btn--ghost" onclick="location.reload()">↻ REPLAY</button>
+      <a class="btn btn--primary" href="../index.html">LEVEL MAP →</a>
+    </div>
+  </section>
+</div>
+
+<script src="../shared/game.js"></script>
+<script>
+/* ════════════════════════════════════════════════════════════════
+   L02 — NAME THE WIRES
+   Stage 1 wire-up · Stage 2 f vs f(x) · Stage 3 notation traps · Stage 4 field test
+   ════════════════════════════════════════════════════════════════ */
+'use strict';
+
+var LEVEL = 'L02';
+var MAX_SCORE = 1000;
+var score = 0;
+
+BB.mountHud(document.getElementById('hud'), LEVEL);
+BB.steps(document.getElementById('steps'), 5, 0);
+
+function go(n) {
+  BB.steps(document.getElementById('steps'), 5, Math.min(n, 4));
+  BB.stage('s' + n);
+  if (n === 5) { finish(); }
+}
+
+function award(pts, msg) {
+  score += pts;
+  BB.toast('+' + pts + ' pts · ' + msg);
+}
+
+/* Quiz engine shared hai: BB.quiz() in shared/game.js */
+
+/* ════════════════════════════════════════ STAGE 1 — WIRE UP */
+(function stage1() {
+  var held = null;
+  var placed = 0;
+
+  document.querySelectorAll('#bank .chip').forEach(function (chip) {
+    chip.onclick = function () {
+      document.querySelectorAll('#bank .chip').forEach(function (c) { c.classList.remove('held'); });
+      if (held === chip) { held = null; return; }
+      held = chip;
+      chip.classList.add('held');
+      document.querySelectorAll('.slot:not(.filled)').forEach(function (s) { s.classList.add('hot'); });
+    };
+  });
+
+  document.querySelectorAll('.slot').forEach(function (slot) {
+    slot.onclick = function () {
+      if (slot.classList.contains('filled')) { return; }
+      if (!held) { BB.toast('Pehle neeche se ek label chunein'); return; }
+
+      if (held.dataset.id === slot.dataset.want) {
+        slot.textContent = held.textContent;
+        slot.classList.remove('hot');
+        slot.classList.add('filled');
+        held.classList.add('used');
+        held = null;
+        placed++;
+        award(50, 'wire label ho gayi');
+        document.querySelectorAll('.slot').forEach(function (s) { s.classList.remove('hot'); });
+        if (placed === 3) { done(); }
+      } else {
+        slot.classList.add('wrong');
+        setTimeout(function () { slot.classList.remove('wrong'); }, 400);
+        BB.toast(hint(held.dataset.id));
+      }
+    };
+  });
+
+  function hint(id) {
+    if (id === 'GRAPH') { return 'GRAPH ek doosra naqsha hai — machine ka part nahi (L04 me aayega)'; }
+    if (id === 'SLOPE') { return 'SLOPE line ki dhaal hai — L12 ka tool, yahan nahi'; }
+    return 'Us jagah yeh label nahi lagti — dobara sochein';
+  }
+
+  function done() {
+    award(50, 'diagram mukammal');
+    document.getElementById('m-box').classList.add('box--good');
+    document.getElementById('m-done').innerHTML =
+      '<div class="banner banner--ok" style="margin-top:20px">' +
+        '<div class="banner__chip">FIGURE 2 · COMPLETE</div>' +
+        '<p style="margin:0 0 8px">Yehi Stewart ka <strong>machine diagram</strong> hai (p. 9).' +
+        ' Poori baat ek line me:</p>' +
+        '<p class="mono" style="margin:0;color:var(--ok);font-size:16px">output = f(input)</p>' +
+      '</div>' +
+      '<div class="navrow"><span></span>' +
+        '<button class="btn btn--primary" onclick="go(2)">NEXT STAGE →</button></div>';
+  }
+})();
+
+/* ════════════════════════════════════════ STAGE 2 — f vs f(x) */
+var Q2 = [
+  {
+    prompt: '<span class="mono">f</span> kya hai?',
+    options: [
+      { t: 'ek number' },
+      { t: 'machine / rule ka NAAM', ok: true },
+      { t: 'graph ka naam' }
+    ],
+    why: '<b>f</b> rule ka naam hai — machine khud. Python me socho: <b>f</b> function object hai, ' +
+         'na ke uska nateeja.'
+  },
+  {
+    prompt: '<span class="mono">f(x)</span> kya hai?',
+    options: [
+      { t: 'f ko x se multiply karna' },
+      { t: 'us machine ka OUTPUT, x par', ok: true },
+      { t: 'f ki domain' }
+    ],
+    why: '<b>f(x)</b> ek <b>value</b> hai — machine ne x par jo output diya. ' +
+         'Yeh multiplication nahi hai; brackets "is input par chala" ka matlab dete hain.'
+  },
+  {
+    prompt: 'Kisi ne likha: <span class="mono">f = 3x² − x + 2</span>. Faisla?',
+    options: [
+      { t: 'bilkul theek hai' },
+      { t: 'sust likhai — sahi tareeqa f(x) = 3x² − x + 2 hai', ok: true },
+      { t: 'galat hai, aisa likha hi nahi ja sakta' }
+    ],
+    why: 'Baayen taraf <b>f</b> (naam) hai aur daayen taraf ek <b>output expression</b>. ' +
+         'Dono barabar likhna sust hai. <b>f(x) = 3x² − x + 2</b> likhein — tab dono taraf output hai.'
+  },
+  {
+    prompt: '<span class="mono">A = f(r) = πr²</span> — independent variable kaun hai?',
+    options: [
+      { t: 'r', ok: true },
+      { t: 'A' },
+      { t: 'π' }
+    ],
+    why: 'Radius <b>r</b> aap chunte hain — woh independent hai. Area <b>A</b> us par depend karta hai, ' +
+         'so A dependent hai. π ek constant hai, variable nahi.'
+  },
+  {
+    prompt: '<span class="mono">P = f(t)</span> — aabadi waqt par depend karti hai. Dependent variable?',
+    options: [
+      { t: 't' },
+      { t: 'P', ok: true },
+      { t: 'f' }
+    ],
+    why: '<b>P</b> dependent hai (woh tay hoti hai), <b>t</b> independent (woh hum dete hain), ' +
+         'aur <b>f</b> variable hi nahi — woh rule ka naam hai.'
+  }
+];
+
+/* ════════════════════════════════════════ STAGE 3 — NOTATION TRAPS */
+var GIVEN = 'f(x) = 3x² − x + 2';
+var Q3 = [
+  {
+    prompt: '<span class="mono">f(2)</span> = ?',
+    given: GIVEN,
+    answer: 12,
+    why: 'f(2) = 3(2)² − 2 + 2 = 12 − 2 + 2 = <b>12</b>'
+  },
+  {
+    prompt: '<span class="mono">f(−2)</span> = ?',
+    given: GIVEN,
+    answer: 16,
+    why: 'f(−2) = 3(−2)² − (−2) + 2 = 12 + 2 + 2 = <b>16</b>. ' +
+         'Dhyan: square ne minus kha liya, magar beech wale −x ne usko <b>+2</b> bana diya.'
+  },
+  {
+    prompt: '<span class="mono">f(a)</span> = ?',
+    given: GIVEN,
+    options: [
+      { t: '3a² − a + 2', ok: true },
+      { t: '3a² + a + 2' },
+      { t: '3a − a + 2' }
+    ],
+    why: 'Har <b>x</b> ki jagah <b>a</b> rakh do — bas. f(a) = <b>3a² − a + 2</b>'
+  },
+  {
+    prompt: '<span class="mono">f(−a)</span> = ?',
+    given: GIVEN,
+    options: [
+      { t: '3a² − a + 2' },
+      { t: '3a² + a + 2', ok: true },
+      { t: '−3a² + a − 2' }
+    ],
+    why: 'f(−a) = 3(−a)² − (−a) + 2 = 3a² <b>+ a</b> + 2. ' +
+         'Sirf beech wali term ka sign palta — square wali nahi.'
+  },
+  {
+    prompt: '<span class="mono">f(a + 1)</span> = ?',
+    given: GIVEN,
+    options: [
+      { t: '3a² − a + 3' },
+      { t: '3a² + 6a + 3' },
+      { t: '3a² + 5a + 4', ok: true }
+    ],
+    why: '3(a+1)² − (a+1) + 2 = 3(a² + 2a + 1) − a − 1 + 2 = 3a² + 6a + 3 − a + 1 = ' +
+         '<b>3a² + 5a + 4</b>. (a+1)² ko phailana zaroori hai — a² + 1 <b>galat</b> hai.'
+  },
+  {
+    prompt: 'Kaun sa <span class="mono">12a² − 2a + 2</span> ke barabar hai?',
+    given: GIVEN,
+    options: [
+      { t: 'f(2a) — input ko doguna', ok: true },
+      { t: '2f(a) — output ko doguna' },
+      { t: 'dono barabar hain' }
+    ],
+    why: '<b>f(2a)</b> = 3(2a)² − 2a + 2 = <b>12a² − 2a + 2</b><br>' +
+         '<b>2f(a)</b> = 2(3a² − a + 2) = <b>6a² − 2a + 4</b><br>' +
+         'Bracket ke <b>andar</b> ka 2 input ko badalta hai (aur square hone par 4 guna asar karta hai). ' +
+         'Bracket ke <b>bahar</b> ka 2 sirf output ko doguna karta hai.'
+  },
+  {
+    prompt: '<span class="mono">f(a²)</span> = ?',
+    given: GIVEN,
+    options: [
+      { t: '3a⁴ − a² + 2', ok: true },
+      { t: '9a⁴ − a² + 2' },
+      { t: '(3a² − a + 2)²' }
+    ],
+    why: 'x ki jagah a² rakho: 3(a²)² − (a²) + 2 = <b>3a⁴ − a² + 2</b>. ' +
+         '(a²)² = a⁴, aur 3 bahar hi rehta hai — 9 nahi banta.'
+  },
+  {
+    prompt: '<span class="mono">[f(a)]²</span> = ?',
+    given: GIVEN,
+    options: [
+      { t: '3a⁴ − a² + 2' },
+      { t: '9a⁴ + a² + 4' },
+      { t: '9a⁴ − 6a³ + 13a² − 4a + 4', ok: true }
+    ],
+    why: 'Pehle machine chalao, phir poore output ko square karo: (3a² − a + 2)² = ' +
+         '<b>9a⁴ − 6a³ + 13a² − 4a + 4</b>.<br>' +
+         '9a⁴ + a² + 4 wala option classic ghalti hai — cross terms bhool jaana. ' +
+         'Aur f(a²) se bilkul mukhtalif hai.'
+  }
+];
+
+/* ════════════════════════════════════════ STAGE 4 — FIELD TEST */
+var Q4 = [
+  {
+    prompt: '"Training <strong>loss</strong>, <strong>epoch</strong> number par depend karta hai."',
+    options: [
+      { t: 'L = f(e)   ·   independent: e', ok: true },
+      { t: 'e = f(L)   ·   independent: L' },
+      { t: 'f = L(e)   ·   independent: f' }
+    ],
+    why: 'Epoch hum chalate hain (independent), loss us par nikalta hai (dependent): <b>L = f(e)</b>. ' +
+         'Teesra option to notation hi ulta hai — f rule ka naam hai, usko variable ki tarah nahi likhte.'
+  },
+  {
+    prompt: '"Envelope ka <strong>postage</strong> uske <strong>wazan</strong> par depend karta hai." ' +
+            '<span class="dim">(Stewart ka Example C)</span>',
+    options: [
+      { t: 'w = f(C)' },
+      { t: 'C = f(w)', ok: true },
+      { t: 'C = w(f)' }
+    ],
+    why: '<b>C = f(w)</b>. Yahan koi formula nahi — post office ki rate table hi rule hai. ' +
+         'Function ke liye formula zaroori nahi, sirf "har input ka ek output" zaroori hai.'
+  },
+  {
+    prompt: '"<strong>Circle ka area</strong> uske <strong>radius</strong> par depend karta hai." ' +
+            '<span class="dim">(Example A)</span>',
+    options: [
+      { t: 'A = f(r) = πr²', ok: true },
+      { t: 'r = f(A) = √(A/π)' },
+      { t: 'dono theek hain, koi farq nahi' }
+    ],
+    why: 'Diya gaya bayan "area depends on radius" hai → <b>A = f(r) = πr²</b>. ' +
+         'Doosra option ghalat nahi hai — woh <b>inverse function</b> hai, aur woh poora ' +
+         '<b>L34/L35</b> ka mauzoo hai. Lekin is bayan ka tarjuma nahi.'
+  },
+  {
+    prompt: '"Model ki <strong>accuracy</strong>, training data ke <strong>size n</strong> par depend karti hai."',
+    options: [
+      { t: 'n = f(acc)' },
+      { t: 'acc = f(n)', ok: true },
+      { t: 'acc = n(f)' }
+    ],
+    why: '<b>acc = f(n)</b>. Yeh AI ka scaling-law wala rishta hai — <b>L16</b> (power functions) me ' +
+         'iski asli shape milegi.'
+  }
+];
+
+/* ════════════════════════════════════════ wiring */
+document.addEventListener('DOMContentLoaded', function () {
+  var mk = function (mount, qs, pts, next, label) {
+    BB.quiz({
+      mount: mount, questions: qs, pts: pts, doneLabel: label,
+      onScore: function (p) { award(p, 'sahi'); },
+      onDone: function () { go(next); }
+    });
+  };
+  mk('q2', Q2, 40, 3, 'NOTATION TRAPS →');
+  mk('q3', Q3, 50, 4, 'FIELD TEST →');
+  mk('q4', Q4, 50, 5, 'FINISH LEVEL →');
+});
+
+/* ════════════════════════════════════════ FINISH */
+function finish() {
+  var pct = BB.complete(LEVEL, score, MAX_SCORE);
+  BB.refreshHud(LEVEL);
+  var doneAct1 = BB.LEVELS.filter(function (l) { return l.act === 1 && BB.isDone(l.id); }).length;
+  document.getElementById('final-score').textContent = score + ' / ' + MAX_SCORE;
+  document.getElementById('final-decode').textContent =
+    'DECODE ' + Math.round(pct) + '%   ·   TOOLS ' + BB.tools().length + ' / ' + BB.LEVELS.length +
+    '   ·   ACT I: ' + doneAct1 + ' / 10';
+  BB.toast('LABEL GUN unlocked · DECODE ' + Math.round(pct) + '%', 3600);
+}
+</script>
+</body>
+</html>
