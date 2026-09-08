@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>L03 · WHERE DOES IT REFUSE? — The Black Box</title>
+<link rel="stylesheet" href="../shared/game.css">
+</head>
+<body>
+
+<div id="hud"></div>
+
+<div class="wrap">
+  <div class="steps" id="steps"></div>
+
+  <!-- ══════════════════════════════════════ STAGE 0 — BRIEFING -->
+  <section id="s0" class="stage active">
+    <div class="eyebrow">Act I · First Contact · Level 03</div>
+    <h1>WHERE DOES IT REFUSE?</h1>
+    <p class="dim">Stewart §1.1 · p. 13 (domain convention + Example 6) · Ex 39–48 (p. 20)</p>
+
+    <div class="card">
+      <h3>Briefing</h3>
+      <p>Lab me nayi box aayi hai — <span class="mono">SALVAGE UNIT CH-03</span>.
+         Aap <strong>PROBE</strong> (L01 ka tool) nikal kar teen shots maarte hain:</p>
+      <table class="log" style="max-width:340px">
+        <thead><tr><th>INPUT</th><th>OUTPUT</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">−5</td><td class="mono bad">ERROR</td></tr>
+          <tr><td class="mono">0</td><td class="mono bad">JAM</td></tr>
+          <tr><td class="mono">3</td><td class="mono ok">0.577</td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top:14px">Do shots fail hue — aur box ne <strong>do mukhtalif
+         lafz</strong> diye. ERROR aur JAM ek hi cheez nahi.</p>
+    </div>
+
+    <div class="card card--warn">
+      <h3>Mission</h3>
+      <p>Pata karo box <em>kahan</em> kaam karti hai (<strong>domain</strong>),
+         <em>kya</em> nikaal sakti hai (<strong>range</strong>), aur woh do lafz
+         alag kyun thay.</p>
+      <p class="dim mono" style="font-size:13px">4 stages · 1000 points · reward: BOUNDARY TAPE</p>
+    </div>
+
+    <div class="navrow">
+      <a class="btn btn--ghost" href="../index.html">← LEVEL MAP</a>
+      <button class="btn btn--primary" onclick="go(1)">START SCAN →</button>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════ STAGE 1 — BOUNDARY SCAN -->
+  <section id="s1" class="stage">
+    <div class="eyebrow">Stage 1 / 4 · 250 pts</div>
+    <h1>Boundary scan</h1>
+    <p>Number line par kisi bhi point par click karo — probe fire hoga.
+       Green = qubool, red = reject. Kam az kam <strong>8 probes</strong> maaro
+       (accept aur reject dono), phir domain declare karo.</p>
+    <div id="scan"></div>
+  </section>
+
+  <!-- ══════════════════════════════════════ STAGE 2 — DOMAIN DRILLS -->
+  <section id="s2" class="stage">
+    <div class="eyebrow">Stage 2 / 4 · 250 pts</div>
+    <h1>Domain drills</h1>
+    <p>Paanch sawaal — <strong>seedhe Stewart ke Ex 39–46</strong> (p. 20) se.
+       Yaad rakho: sirf do cheezein mana hain.</p>
+    <div class="card card--bad" style="max-width:640px">
+      <h3>Banned operations</h3>
+      <p class="mono" style="margin:0 0 6px;color:var(--bad)">1.  EVEN root (√, ⁴√ …) ke andar negative</p>
+      <p class="mono" style="margin:0;color:var(--bad)">2.  denominator me zero</p>
+    </div>
+    <div id="q2"></div>
+  </section>
+
+  <!-- ══════════════════════════════════════ STAGE 3 — RANGE PAINTER -->
+  <section id="s3" class="stage">
+    <div class="eyebrow">Stage 3 / 4 · 250 pts</div>
+    <h1>Range painter</h1>
+    <p>Domain to inputs ka set hai. <strong>Range</strong> outputs ka set hai —
+       aur usko dekhne ka sabse acha tareeqa yeh hai: input ko poori domain par
+       ghumao, aur dekho output line par kya kya paint hota hai.</p>
+    <div id="paint"></div>
+  </section>
+
+  <!-- ══════════════════════════════════════ STAGE 4 — REALITY CHECK -->
+  <section id="s4" class="stage">
+    <div class="eyebrow">Stage 4 / 4 · 250 pts</div>
+    <h1>Reality check</h1>
+    <p>Formula aksar haqeeqat se <strong>zyada</strong> allow karta hai.
+       Aur AI me domain/range roz kaam aati hai.</p>
+    <div id="q4"></div>
+  </section>
+
+  <!-- ══════════════════════════════════════ STAGE 5 — COMPLETE -->
+  <section id="s5" class="stage">
+    <div class="eyebrow">Level complete</div>
+    <h1>Box ka rule tha: <span class="mono" style="color:var(--ok)">g(x) = 1/√x</span></h1>
+
+    <div class="card card--ok">
+      <h3>Dono failures ki wajah alag thi</h3>
+      <table class="log" style="max-width:520px">
+        <thead><tr><th>SHOT</th><th>KYA HUA</th><th>JURM</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">g(−5)</td><td class="mono">1/√(−5)</td><td class="bad">√ me negative</td></tr>
+          <tr><td class="mono">g(0)</td><td class="mono">1/0</td><td class="bad">zero se taqseem</td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top:14px">Domain = <span class="mono ok">(0, ∞)</span> ·
+         Range = <span class="mono ok">(0, ∞)</span></p>
+    </div>
+
+    <div class="card card--ok">
+      <h3>Aapne pakka kiya</h3>
+      <ul class="obj">
+        <li class="done"><strong>domain</strong> = tamam jaiz inputs · <strong>range</strong> = tamam mumkin outputs</li>
+        <li class="done">Sirf do jurm: even root me negative, denominator me zero</li>
+        <li class="done"><strong>Cube root</strong> har real number qubool karta hai — trap</li>
+        <li class="done">Do shartein ho to <strong>overlap</strong> (AND), union nahi</li>
+        <li class="done">Root <strong>denominator</strong> me ho to <span class="mono">&gt;</span> lagta hai, <span class="mono">≥</span> nahi</li>
+        <li class="done"><span class="mono">[ ]</span> = shamil · <span class="mono">( )</span> = shamil nahi</li>
+        <li class="done">Range <strong>endpoints se nahi banti</strong> — jab tak function monotonic na ho</li>
+      </ul>
+    </div>
+
+    <div class="tool" style="margin-bottom:18px">
+      <div class="tool__label">TOOL UNLOCKED</div>
+      <div class="tool__name">BOUNDARY TAPE</div>
+      <p class="dim" style="margin:0">Kisi bhi rule ki domain aur range nikalna.
+         Yeh tool <strong>8 levels</strong> me lagta hai — L08, L16, L17, L24, L25,
+         L31, L36, L40. Poori campaign ka sabse zyada use hone wala tool.</p>
+    </div>
+
+    <div class="card">
+      <h3>Final score</h3>
+      <p class="readout" id="final-score">0 / 1000</p>
+      <p class="dim mono" style="font-size:13px" id="final-decode">DECODE 0%</p>
+    </div>
+
+    <div class="card card--raised">
+      <h3>Ab yeh karein</h3>
+      <p><strong>1.</strong> Colab me <code class="mono">L03Cinematic</code> —
+         khaas taur par <code class="mono">L03RangeParadox</code> clip dekhein.</p>
+      <p><strong>2.</strong> <a href="notes.md">notes.md</a> → Ex 39–48 ke poore
+         solutions + domain nikalne ka 4-step recipe.</p>
+      <p><strong>3.</strong> Phir <strong>L04 · THE SILHOUETTE</strong> — bohat
+         probes ke baad box ka <em>shape</em> nazar aata hai. Graph.</p>
+    </div>
+
+    <div class="navrow">
+      <button class="btn btn--ghost" onclick="location.reload()">↻ REPLAY</button>
+      <a class="btn btn--primary" href="../index.html">LEVEL MAP →</a>
+    </div>
+  </section>
+</div>
+
+<script src="../shared/game.js"></script>
+<script>
+/* ════════════════════════════════════════════════════════════════
+   L03 — WHERE DOES IT REFUSE?
+   S1 number-line probe · S2 domain drills · S3 canvas range painter · S4 reality
+   ════════════════════════════════════════════════════════════════ */
+'use strict';
+
+var LEVEL = 'L03';
+var MAX_SCORE = 1000;
+var score = 0;
+
+BB.mountHud(document.getElementById('hud'), LEVEL);
+BB.steps(document.getElementById('steps'), 5, 0);
+
+function go(n) {
+  BB.steps(document.getElementById('steps'), 5, Math.min(n, 4));
+  BB.stage('s' + n);
+  if (n === 5) { finish(); }
+}
+
+function award(pts, msg) {
+  score += pts;
+  BB.toast('+' + pts + ' pts · ' + msg);
+}
+
+/* ════════════════════════════════════════ STAGE 1 — BOUNDARY SCAN */
+
+var SCAN = [
+  {
+    name: 'BOX-α',
+    hint: 'Yehi briefing wali box hai.',
+    accepts: function (x) { return x > 0; },
+    out: function (x) { return (1 / Math.sqrt(x)).toFixed(3); },
+    q: {
+      prompt: 'BOX-α ki domain kya hai?',
+      options: [
+        { t: '(0, ∞)', ok: true },
+        { t: '[0, ∞)' },
+        { t: '(−∞, ∞)' }
+      ],
+      why: '0 par box JAM karti hai (1/0), is liye <b>0 shamil nahi</b> → round bracket. ' +
+           'Aur negative par √ fail hoti hai. So domain <b>(0, ∞)</b>.'
+    }
+  },
+  {
+    name: 'BOX-β',
+    hint: 'Is box me sirf ek √ hai, koi taqseem nahi.',
+    accepts: function (x) { return x >= -2; },
+    out: function (x) { return Math.sqrt(x + 2).toFixed(3); },
+    q: {
+      prompt: 'BOX-β ki domain kya hai? <span class="dim">(rule: √(x+2))</span>',
+      options: [
+        { t: '(−2, ∞)' },
+        { t: '[−2, ∞)', ok: true },
+        { t: '[2, ∞)' }
+      ],
+      why: '−2 par √0 = 0 milta hai — bilkul jaiz. Is liye <b>−2 shamil hai</b> → ' +
+           'square bracket: <b>[−2, ∞)</b>. Yeh Stewart ka <b>Example 6(a)</b> hai (p. 13).'
+    }
+  },
+  {
+    name: 'BOX-γ',
+    hint: 'Yeh box do jagah pe girti hai, ek nahi.',
+    accepts: function (x) { return x !== 0 && x !== 1; },
+    out: function (x) { return (1 / (x * x - x)).toFixed(3); },
+    q: {
+      prompt: 'BOX-γ ki domain kya hai? <span class="dim">(rule: 1/(x² − x))</span>',
+      options: [
+        { t: '(−∞, 0) ∪ (0, 1) ∪ (1, ∞)', ok: true },
+        { t: '(−∞, 0) ∪ (1, ∞)' },
+        { t: '(0, 1)' }
+      ],
+      why: 'x² − x = x(x − 1), to denominator 0 hota hai <b>x = 0</b> aur <b>x = 1</b> par. ' +
+           'Baqi poori line theek hai — yani teen tukde. Yeh Stewart ka <b>Example 6(b)</b> hai. ' +
+           'Dhyan: beech ka tukda (0, 1) bhi domain me shamil hai.'
+    }
+  }
+];
+
+var TICKS = (function () {
+  var t = [];
+  for (var v = -6; v <= 6 + 1e-9; v += 0.5) { t.push(Math.round(v * 10) / 10); }
+  return t;
+})();
+
+function renderScan(i) {
+  var b = SCAN[i];
+  var fired = { ok: 0, no: 0 };
+
+  document.getElementById('scan').innerHTML =
+    '<div class="card">' +
+      '<h3>Box ' + (i + 1) + ' / ' + SCAN.length + '</h3>' +
+      '<h2 class="mono" style="color:var(--box)">' + b.name + '</h2>' +
+      '<p class="dim">' + b.hint + '</p>' +
+      '<div class="nline" id="nl"></div>' +
+      '<div class="row">' +
+        '<span class="probehint" id="ph">PROBES 0 &nbsp;·&nbsp; accepted 0 &nbsp;·&nbsp; rejected 0</span>' +
+        '<div class="spacer"></div>' +
+        '<span class="pill pill--empty" id="lastout">—</span>' +
+      '</div>' +
+      '<div id="scanq" style="margin-top:6px"></div>' +
+    '</div>';
+
+  var nl = document.getElementById('nl');
+  TICKS.forEach(function (v) {
+    var btn = document.createElement('button');
+    btn.className = 'nl-tick';
+    btn.textContent = (v % 1 === 0) ? String(v) : '';
+    btn.title = String(v);
+    btn.onclick = function () { probe(v, btn); };
+    nl.appendChild(btn);
+  });
+
+  function probe(v, btn) {
+    if (btn.disabled) { return; }
+    btn.disabled = true;
+    var good = b.accepts(v);
+    btn.classList.add(good ? 'ok' : 'no');
+    btn.textContent = good ? '✓' : '✕';
+    var out = document.getElementById('lastout');
+    out.textContent = good ? b.out(v) : (v === 0 || (b.name === 'BOX-γ' && v === 1) ? 'JAM' : 'ERROR');
+    out.className = 'pill ' + (good ? 'pill--ok' : 'pill--bad');
+
+    if (good) { fired.ok++; } else { fired.no++; }
+    document.getElementById('ph').textContent =
+      'PROBES ' + (fired.ok + fired.no) + ' · accepted ' + fired.ok + ' · rejected ' + fired.no;
+
+    if (fired.ok + fired.no >= 8 && fired.ok > 0 && fired.no > 0) { unlock(); }
+  }
+
+  var unlocked = false;
+  function unlock() {
+    if (unlocked) { return; }
+    unlocked = true;
+    award(30, 'scan mukammal');
+    document.getElementById('scanq').innerHTML = '<div id="scanq-' + i + '"></div>';
+    BB.quiz({
+      mount: 'scanq-' + i,
+      questions: [b.q],
+      pts: 50,
+      doneLabel: (i === SCAN.length - 1) ? 'DOMAIN DRILLS →' : 'NEXT BOX →',
+      onScore: function (p) { award(p, 'domain sahi'); },
+      onDone: function () {
+        if (i === SCAN.length - 1) { award(10, 'teeno boxes clear'); go(2); }
+        else { renderScan(i + 1); }
+      }
+    });
+  }
+}
+
+/* ════════════════════════════════════════ STAGE 2 — DOMAIN DRILLS (Ex 39-46) */
+
+var Q2 = [
+  {
+    prompt: 'Domain nikalo.',
+    given: 'f(t) = ∛(2t − 1)',
+    options: [
+      { t: 't ≥ 1/2', },
+      { t: '(−∞, ∞) — saari real numbers', ok: true },
+      { t: 't ≠ 1/2' }
+    ],
+    why: '<b>Trap.</b> Yeh <b>cube root</b> hai — odd root. ∛(−8) = −2, bilkul jaiz. ' +
+         'Sirf <b>even</b> roots (√, ⁴√, ⁶√…) negative se darte hain. ' +
+         'Domain = <b>(−∞, ∞)</b>. &nbsp;<span class="dim">[Ex 1.1.41]</span>'
+  },
+  {
+    prompt: 'Domain nikalo.',
+    given: 'g(t) = √(3 − t) − √(2 + t)',
+    options: [
+      { t: '[−2, 3]', ok: true },
+      { t: '(−∞, 3] ∪ [−2, ∞)' },
+      { t: '[3, ∞)' }
+    ],
+    why: 'Do √ = do shartein: <b>3 − t ≥ 0 → t ≤ 3</b> AUR <b>2 + t ≥ 0 → t ≥ −2</b>. ' +
+         '"AUR" ka matlab <b>overlap</b> (intersection) hai, union nahi. ' +
+         'Dono ek saath sach: <b>[−2, 3]</b>. &nbsp;<span class="dim">[Ex 1.1.42]</span>'
+  },
+  {
+    prompt: 'Domain nikalo.',
+    given: 'h(x) = 1 / ⁴√(x² − 5x)',
+    options: [
+      { t: '(−∞, 0] ∪ [5, ∞)' },
+      { t: '(−∞, 0) ∪ (5, ∞)', ok: true },
+      { t: '(0, 5)' }
+    ],
+    why: 'Do sharton ka jorr: ⁴√ ke liye <b>x² − 5x ≥ 0</b>, aur woh root ' +
+         '<b>denominator</b> me hai to <b>≠ 0</b> bhi. Dono mila kar <b>x² − 5x &gt; 0</b>. ' +
+         'x(x − 5) &gt; 0 → x &lt; 0 <em>ya</em> x &gt; 5. So <b>(−∞, 0) ∪ (5, ∞)</b> — ' +
+         '0 aur 5 shamil <b>nahi</b>. &nbsp;<span class="dim">[Ex 1.1.43]</span>'
+  },
+  {
+    prompt: 'Domain nikalo.',
+    given: 'F(p) = √(2 − √p)',
+    options: [
+      { t: '[0, 4]', ok: true },
+      { t: '[0, 2]' },
+      { t: '(−∞, 4]' }
+    ],
+    why: 'Andar se bahar chalo. Andar wala <b>√p</b> chahta hai <b>p ≥ 0</b>. ' +
+         'Bahar wala chahta hai <b>2 − √p ≥ 0 → √p ≤ 2 → p ≤ 4</b>. ' +
+         'Dono: <b>[0, 4]</b>. (2 nahi — woh √p ki hadd thi, p ki nahi.) ' +
+         '&nbsp;<span class="dim">[Ex 1.1.45]</span>'
+  },
+  {
+    prompt: 'Domain nikalo.',
+    given: 'f(x) = (x + 4) / (x² − 9)',
+    options: [
+      { t: 'x ≠ 3 sirf' },
+      { t: 'x ≠ −4, 3, −3' },
+      { t: '(−∞,−3) ∪ (−3, 3) ∪ (3, ∞)', ok: true }
+    ],
+    why: 'x² − 9 = (x−3)(x+3) → denominator 0 hota hai <b>x = 3</b> aur <b>x = −3</b> par. ' +
+         'Numerator ka −4 se koi masla nahi — <b>numerator zero hona bilkul jaiz hai</b> ' +
+         '(f(−4) = 0). Sirf <b>denominator</b> ka zero mana hai. ' +
+         '&nbsp;<span class="dim">[Ex 1.1.39]</span>'
+  }
+];
+
+/* ════════════════════════════════════════ STAGE 3 — RANGE PAINTER */
+
+var RANGE = [
+  {
+    expr: 'f(x) = x²',
+    dom: [-1, 3],
+    f: function (x) { return x * x; },
+    inAx: [-2, 4],
+    outAx: [-1, 10],
+    q: {
+      prompt: 'Poora sweep karne ke baad — range kya hai?',
+      given: 'f(x) = x²   ·   domain = [−1, 3]',
+      options: [
+        { t: '[1, 9]' },
+        { t: '[0, 9]', ok: true },
+        { t: '[−1, 3]' }
+      ],
+      why: '<b>Yeh level ka sabse bara sabaq hai.</b> f(−1) = 1 aur f(3) = 9, to log ' +
+           '[1, 9] likh dete hain. Lekin <b>x = 0 bhi domain me hai</b> aur f(0) = 0 — ' +
+           'aur 0 sabse chhota output hai. Aapne trail me dekha: pehle neeche 0 tak gaya, ' +
+           'phir 9 tak chadha. Range = <b>[0, 9]</b>.'
+    }
+  },
+  {
+    expr: 'f(x) = √(4 − x²)',
+    dom: [-2, 2],
+    f: function (x) { return Math.sqrt(Math.max(0, 4 - x * x)); },
+    inAx: [-3, 3],
+    outAx: [-1, 3],
+    q: {
+      prompt: 'Range kya hai?',
+      given: 'f(x) = √(4 − x²)   ·   domain = [−2, 2]',
+      options: [
+        { t: '[0, 2]', ok: true },
+        { t: '[−2, 2]' },
+        { t: '[0, 4]' }
+      ],
+      why: 'Yeh circle x² + y² = 4 ka <b>upper half</b> hai. Endpoints (±2) par output 0, ' +
+           'aur sabse ooncha beech me x = 0 par: √4 = <b>2</b>. Range = <b>[0, 2]</b>. ' +
+           '√ ka output kabhi negative nahi hota — is liye [−2, 2] mumkin hi nahi. ' +
+           '&nbsp;<span class="dim">[Ex 1.1.47]</span>'
+    }
+  },
+  {
+    expr: 'f(x) = 2x − 1',
+    dom: [-2, 3],
+    f: function (x) { return 2 * x - 1; },
+    inAx: [-3, 4],
+    outAx: [-6, 6],
+    q: {
+      prompt: 'Range kya hai? Aur is baar endpoint trick kaam kar gaya — kyun?',
+      given: 'f(x) = 2x − 1   ·   domain = [−2, 3]',
+      options: [
+        { t: '[−5, 5] — kyunki line kabhi palti nahi (monotonic)', ok: true },
+        { t: '[−2, 3] — domain wahi range hai' },
+        { t: '(−∞, ∞) — line to infinite hoti hai' }
+      ],
+      why: 'f(−2) = −5, f(3) = 5 → range <b>[−5, 5]</b>. Yahan endpoints kaam kar gaye ' +
+           'kyunki line <b>hamesha barhti rehti hai</b> — beech me kahin palti nahi. ' +
+           '<b>Qaida:</b> endpoint shortcut sirf <b>monotonic</b> functions par chalta hai. ' +
+           'x² monotonic nahi tha [−1, 3] par (pehle gira, phir chadha) — isi liye Round 1 ' +
+           'me trap tha. (Monotonic = increasing/decreasing, aur woh <b>L09</b> ka tool hai.)'
+    }
+  }
+];
+
+var CV_W = 680, CV_H = 190;
+
+function renderRange(i) {
+  var r = RANGE[i];
+  var N = 240;                       // coverage buckets
+  var covered = new Array(N).fill(false);
+  var painted = {};                  // output pixel -> true
+  var cur = r.dom[0];
+  var prev = r.dom[0];
+  var unlocked = false;
+
+  document.getElementById('paint').innerHTML =
+    '<div class="card">' +
+      '<h3>Round ' + (i + 1) + ' / ' + RANGE.length + '</h3>' +
+      '<h2 class="mono" style="color:var(--ok)">' + r.expr + '</h2>' +
+      '<p class="dim mono" style="font-size:13px">domain = [' + r.dom[0] + ', ' + r.dom[1] + ']</p>' +
+      '<canvas class="paintcv" id="cv" width="' + CV_W + '" height="' + CV_H + '"></canvas>' +
+      '<input type="range" id="sl" min="' + r.dom[0] + '" max="' + r.dom[1] + '" step="0.01" value="' + r.dom[0] + '">' +
+      '<div class="row" style="margin-top:12px">' +
+        '<span class="sweep" id="sw">SWEEP 0%</span>' +
+        '<div class="spacer"></div>' +
+        '<span class="dim mono" style="font-size:12px">slider ko ek sire se doosre sire tak ghumao</span>' +
+      '</div>' +
+      '<div id="rangeq" style="margin-top:6px"></div>' +
+    '</div>';
+
+  var cv = document.getElementById('cv');
+  var ctx = cv.getContext('2d');
+  var sl = document.getElementById('sl');
+  var L = 52, R = CV_W - 30, Y_IN = 52, Y_OUT = CV_H - 56;
+
+  function inX(x) { return L + (x - r.inAx[0]) / (r.inAx[1] - r.inAx[0]) * (R - L); }
+  function outX(y) { return L + (y - r.outAx[0]) / (r.outAx[1] - r.outAx[0]) * (R - L); }
+
+  function axis(y, ax, label, col) {
+    ctx.strokeStyle = '#7d8ea0';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(L - 12, y); ctx.lineTo(R + 12, y); ctx.stroke();
+    ctx.font = '10px monospace';
+    ctx.fillStyle = '#7d8ea0';
+    ctx.textAlign = 'center';
+    for (var v = Math.ceil(ax[0]); v <= ax[1]; v++) {
+      var px = L + (v - ax[0]) / (ax[1] - ax[0]) * (R - L);
+      ctx.beginPath(); ctx.moveTo(px, y - 4); ctx.lineTo(px, y + 4); ctx.stroke();
+      ctx.fillText(String(v), px, y + 17);
+    }
+    ctx.textAlign = 'left';
+    ctx.fillStyle = col;
+    ctx.font = 'bold 9px monospace';
+    ctx.fillText(label, 6, y + 3);
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, CV_W, CV_H);
+    axis(Y_IN, r.inAx, 'INPUT', '#ffb340');
+    axis(Y_OUT, r.outAx, 'OUTPUT', '#35d07f');
+
+    // domain bar
+    ctx.strokeStyle = '#ffb340';
+    ctx.lineWidth = 6;
+    ctx.beginPath();
+    ctx.moveTo(inX(r.dom[0]), Y_IN - 13); ctx.lineTo(inX(r.dom[1]), Y_IN - 13);
+    ctx.stroke();
+
+    // painted range
+    ctx.strokeStyle = '#35d07f';
+    ctx.lineWidth = 7;
+    Object.keys(painted).forEach(function (px) {
+      var p = +px;
+      ctx.beginPath();
+      ctx.moveTo(p, Y_OUT - 13); ctx.lineTo(p + 1.4, Y_OUT - 13);
+      ctx.stroke();
+    });
+
+    // connector
+    var xi = inX(cur), yo = outX(r.f(cur));
+    ctx.setLineDash([4, 4]);
+    ctx.strokeStyle = '#3a4a5c';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(xi, Y_IN); ctx.lineTo(yo, Y_OUT); ctx.stroke();
+    ctx.setLineDash([]);
+
+    // markers
+    ctx.fillStyle = '#ffb340';
+    ctx.beginPath(); ctx.arc(xi, Y_IN, 5.5, 0, 6.2832); ctx.fill();
+    ctx.fillStyle = '#35d07f';
+    ctx.beginPath(); ctx.arc(yo, Y_OUT, 5.5, 0, 6.2832); ctx.fill();
+
+    // live readout
+    ctx.font = 'bold 11px monospace';
+    ctx.fillStyle = '#d7e2ec';
+    ctx.textAlign = 'center';
+    ctx.fillText('x = ' + cur.toFixed(2), xi, Y_IN - 24);
+    ctx.fillText('f(x) = ' + r.f(cur).toFixed(2), yo, Y_OUT + 32);
+    ctx.textAlign = 'left';
+  }
+
+  function mark(x) {
+    var b = Math.floor((x - r.dom[0]) / (r.dom[1] - r.dom[0]) * (N - 1));
+    if (b >= 0 && b < N) { covered[b] = true; }
+    var px = Math.round(outX(r.f(x)));
+    painted[px] = true;
+    painted[px - 1] = true;
+  }
+
+  sl.oninput = function () {
+    cur = +sl.value;
+    var steps = 30;
+    for (var k = 0; k <= steps; k++) {
+      mark(prev + (cur - prev) * k / steps);
+    }
+    prev = cur;
+    draw();
+
+    var pct = Math.round(covered.filter(Boolean).length / N * 100);
+    var sw = document.getElementById('sw');
+    sw.textContent = 'SWEEP ' + pct + '%';
+    if (pct >= 92) {
+      sw.classList.add('full');
+      sw.textContent = 'SWEEP COMPLETE — range paint ho gayi';
+      unlock();
+    }
+  };
+
+  function unlock() {
+    if (unlocked) { return; }
+    unlocked = true;
+    award(20, 'poora sweep');
+    document.getElementById('rangeq').innerHTML = '<div id="rangeq-' + i + '"></div>';
+    BB.quiz({
+      mount: 'rangeq-' + i,
+      questions: [r.q],
+      pts: 60,
+      doneLabel: (i === RANGE.length - 1) ? 'REALITY CHECK →' : 'NEXT ROUND →',
+      onScore: function (p) { award(p, 'range sahi'); },
+      onDone: function () {
+        if (i === RANGE.length - 1) { award(10, 'teeno rounds clear'); go(4); }
+        else { renderRange(i + 1); }
+      }
+    });
+  }
+
+  mark(r.dom[0]);
+  draw();
+}
+
+/* ════════════════════════════════════════ STAGE 4 — REALITY CHECK */
+
+var Q4 = [
+  {
+    prompt: 'L01 wale container ki cost. <strong>Applied</strong> domain kya hai?',
+    given: 'C(w) = 20w² + 180/w      (w = base ki width, metres)',
+    options: [
+      { t: 'w ≠ 0 — formula ki shart kaafi hai' },
+      { t: 'w > 0 — width manfi ya sifar nahi ho sakti', ok: true },
+      { t: '(−∞, ∞)' }
+    ],
+    why: 'Formula sirf <b>w ≠ 0</b> maangta hai (denominator). Lekin haqeeqat me width ' +
+         '<b>manfi</b> nahi ho sakti aur <b>sifar</b> bhi nahi (to box hi na bane). ' +
+         'So applied domain = <b>w > 0</b>. <b>Qaida:</b> applied problem me hamesha ' +
+         '<b>chhoti</b> domain jeetti hai. <span class="dim">[Stewart p. 12, Example 5]</span>'
+  },
+  {
+    prompt: 'Ride app ka fare, aur company sirf 50 km tak service deti hai. Domain?',
+    given: 'f(d) = 80 + 70d',
+    options: [
+      { t: '(−∞, ∞) — polynomial ki domain saari reals hai' },
+      { t: '0 < d ≤ 50', ok: true },
+      { t: 'd ≥ 0' }
+    ],
+    why: 'Math ke lihaz se polynomial har real number leta hai. Magar business rule ' +
+         'domain ko kaat deta hai: distance manfi nahi, aur 50 km se zyada service nahi. ' +
+         '<b>0 &lt; d ≤ 50</b>. Domain sirf formula se nahi — <b>context</b> se bhi banti hai.'
+  },
+  {
+    prompt: '"Kamre me logon ki tadaad" ka function. Domain ki khaas baat?',
+    options: [
+      { t: 'domain sirf non-negative POORE numbers hai (discrete)', ok: true },
+      { t: 'domain [0, ∞) hai' },
+      { t: 'iski koi domain nahi hoti' }
+    ],
+    why: 'Ek kamre me 3.7 log nahi ho sakte. Domain = <b>{0, 1, 2, 3, …}</b> — ' +
+         'yeh <b>discrete</b> domain hai, interval nahi. Calculus ko continuous domain ' +
+         'chahiye hoti hai, is liye aise problems me hum aksar continuous <b>model</b> ' +
+         'bana kar approximate karte hain (yeh <b>L11</b> ka mauzoo hai).'
+  },
+  {
+    prompt: 'Sigmoid ka <strong>RANGE</strong> kya hai?',
+    given: 'sigmoid(x) = 1 / (1 + e^(−x))',
+    options: [
+      { t: '[0, 1]' },
+      { t: '(0, 1)', ok: true },
+      { t: '(−∞, ∞)' }
+    ],
+    why: 'Output 0 aur 1 ke <b>bilkul barabar kabhi nahi hota</b> — sirf qareeb jaata hai ' +
+         '(e^(−x) kabhi 0 nahi hota). Is liye <b>open</b> interval <b>(0, 1)</b>. ' +
+         'Practical nateeja: sigmoid ka output kabhi exact 0 nahi, is liye <b>log(p)</b> ' +
+         'safe hai — magar float precision me 0 ho sakta hai, tab log(0) = −∞ crash. ' +
+         'Isi liye clipping/epsilon lagate hain. (Domain/range ka asli production issue.)'
+  },
+  {
+    prompt: 'ReLU ka <strong>domain</strong> aur <strong>range</strong>?',
+    given: 'ReLU(x) = max(0, x)',
+    options: [
+      { t: 'domain (−∞, ∞) · range [0, ∞)', ok: true },
+      { t: 'domain [0, ∞) · range [0, ∞)' },
+      { t: 'domain (−∞, ∞) · range (−∞, ∞)' }
+    ],
+    why: 'ReLU <b>har</b> real number qubool karta hai → domain <b>(−∞, ∞)</b>. ' +
+         'Lekin nikaalta sirf 0 ya positive → range <b>[0, ∞)</b>, aur <b>0 shamil hai</b> ' +
+         '(kyunki ReLU(−5) = 0 exactly). Yeh ek <b>piecewise</b> function hai — poora ' +
+         'level <b>L08</b> me.'
+  }
+];
+
+/* ════════════════════════════════════════ wiring */
+document.addEventListener('DOMContentLoaded', function () {
+  renderScan(0);
+  renderRange(0);
+  BB.quiz({
+    mount: 'q2', questions: Q2, pts: 50, doneLabel: 'RANGE PAINTER →',
+    onScore: function (p) { award(p, 'domain sahi'); },
+    onDone: function () { go(3); }
+  });
+  BB.quiz({
+    mount: 'q4', questions: Q4, pts: 50, doneLabel: 'FINISH LEVEL →',
+    onScore: function (p) { award(p, 'sahi'); },
+    onDone: function () { go(5); }
+  });
+});
+
+/* ════════════════════════════════════════ FINISH */
+function finish() {
+  var pct = BB.complete(LEVEL, score, MAX_SCORE);
+  BB.refreshHud(LEVEL);
+  var doneAct1 = BB.LEVELS.filter(function (l) { return l.act === 1 && BB.isDone(l.id); }).length;
+  document.getElementById('final-score').textContent = score + ' / ' + MAX_SCORE;
+  document.getElementById('final-decode').textContent =
+    'DECODE ' + Math.round(pct) + '%   ·   TOOLS ' + BB.tools().length + ' / ' + BB.LEVELS.length +
+    '   ·   ACT I: ' + doneAct1 + ' / 10';
+  BB.toast('BOUNDARY TAPE unlocked · DECODE ' + Math.round(pct) + '%', 3600);
+}
+</script>
+</body>
+</html>
